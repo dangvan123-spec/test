@@ -1,0 +1,35 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main  # Chạy khi có commit lên nhánh main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Deploy to VPS
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+  SERVER_IP: ${{ SERVER_IP }}
+  USERNAME: ${{ secrets.USERNAME }}
+  run: |
+    ssh -i $SSH_PRIVATE_KEY $USERNAME@$SERVER_IP << 'EOF'
+      cd /var/www/node-express-demo || exit
+      git pull origin main || exit
+      npm install || exit
+      pm2 restart index.js || pm2 start index.js
+    EOF
