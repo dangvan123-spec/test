@@ -57,5 +57,4 @@ app.delete("/deleteById/:id", (req, res) => {
 
 });
 server = app.listen(5001, function () {
-    console.log("Express App running at http://127.0.0.1:5001");
 })
