@@ -3,17 +3,17 @@ name: Deploy to VPS
 on:
   push:
     branches:
-      - main  # Chạy khi có commit lên nhánh main
+      - master  
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: centos 9 -latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
+      - name: Set up nodejs.js
         uses: actions/setup-node@v2
         with:
           node-version: '16'
